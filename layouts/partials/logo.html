@@ -6,6 +6,8 @@
 	{{/* Defined when logo is mixed (image + text) */}}
 	{{- $logoMix := and $logoImage $logoTitle -}}
 
+	<script data-goatcounter="https://itsabanana.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+
 	<div class="logo{{ with $logoMix }} logo--mixed{{ end }}" style="background-image: url('/img/header.jpg');">
 		<a class="logo__link" href="{{ "" | relLangURL }}"{{ with $logoTitle }} title="{{ . }}"{{ end }} rel="home">
 			{{ with $logoImage -}}
