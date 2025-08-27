@@ -20,3 +20,7 @@ theme = 'mainroad'
   readmore = true
   toc = false
   customCSS = ["css/custom.css"]
+
+[caches]
+  [caches.images]
+    dir = ':cacheDir/images'
