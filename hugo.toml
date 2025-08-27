@@ -1,0 +1,22 @@
+
+baseURL = "https://itsabanana.dev"
+title = "It's a banana? No it's a blog."
+languageCode = "en-GB"
+theme = 'mainroad'
+
+[Author]
+  name = "John Banks"
+
+[Params.logo]
+  title = "It's a banana?"
+  subtitle = "No it's a blog"
+
+[Params.style.vars]
+  highlightColor = "#228B22"
+
+[Params]
+  description = "Yet another blog about coding"
+  post_meta = ["date"]
+  readmore = true
+  toc = false
+  customCSS = ["css/custom.css"]

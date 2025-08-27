@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on It&#39;s a banana? No it&#39;s a blog.</title>
+    <link>https://itsabanana.dev/categories/</link>
+    <description>Recent content in Categories on It&#39;s a banana? No it&#39;s a blog.</description>
+    <generator>Hugo</generator>
+    <language>en-GB</language>
+    <atom:link href="https://itsabanana.dev/categories/index.xml" rel="self" type="application/rss+xml" />
+  </channel>
+</rss>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Local LLM models: Part1 - getting started - It&#39;s a banana? No it&#39;s a blog.</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container header__container">
+		
+	<div class="logo" style="background-image: url('/img/header.jpg');">
+		<a class="logo__link" href="/" title="It&#39;s a banana?" rel="home">
+			<div class="logo__item logo__text">
+					<div class="logo__title">It&#39;s a banana?</div>
+					<div class="logo__tagline">No it&#39;s a blog</div>
+				</div>
+		</a>
+	</div>
+		
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+	<ul class="menu__list">
+		<li class="menu__item menu__item--active">
+			<a class="menu__link" href="/posts/">
+				
+				<span class="menu__text">Blog posts</span>
+				
+			</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/about/">
+				
+				<span class="menu__text">About me</span>
+				
+			</a>
+		</li>
+	</ul>
+</nav>
+
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">Local LLM models: Part1 - getting started</h1>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0a14 14 0 1 1 0 28 1 1 0 0 1 0-28m0 3a3 3 0 1 0 0 22 3 3 0 0 0 0-22m1 4h-2v8.4l6.8 4.4L22 18l-6-3.8z"/></svg><time class="meta__text" datetime="2025-08-27T10:39:38&#43;01:00">August 27, 2025</time></div></div>
+		</header>
+		<div class="content post__content clearfix">
+			<p>This will be a series of posts about running LLMs locally.
+By the end we should have our own web based chat interface which can call tools
+we have defined - e.g. to use a web search API, retrieve pages and feed them back
+into the model.</p>
+<p>This post covers the first steps:</p>
+<ul>
+<li>Setting up an inference server with <a href="https://github.com/ggml-org/llama.cpp">llama.cpp</a>,</li>
+<li>Downloading a model - we&rsquo;ll use <a href="https://github.com/openai/gpt-oss">gpt-oss</a> from OpenAI.</li>
+</ul>
+<p>You&rsquo;ll need a machine with a GPU with at least 16 GB memory for decent performance.
+I&rsquo;m using a Linux box with a 24 GB Nvidia RTX 3090 GPU, 64 GB DDR4 RAM and 8 core, 16 thread AMD Ryzen 7 CPU.
+Using a machine with an integrated GPU where acceleration is supported such as Apple M series
+should also work provided you have enough memory.</p>
+<h3 id="downloading-and-building-llamacpp">Downloading and building llama.cpp</h3>
+<p>There are a number of different possibilities to run model inference locally. I&rsquo;m going with
+<a href="https://github.com/ggml-org/llama.cpp">llama.cpp</a> as it&rsquo;s efficient, easy to setup and supports
+a wide range of open weights models.
+The code ggml library is written in C++ with optimised CPU BLAS code and acceleration
+on GPU (CUDA, Metal, HIP, Vulkan etc.).</p>
+<p>It&rsquo;s best to build from source to get the latest version compiled for your hardware.
+See the <a href="https://github.com/ggml-org/llama.cpp/blob/master/docs/build.md">build instructions</a> for details.
+e.g. If we have a NVIDIA GPU with CUDA toolkit installed:</p>
+<pre tabindex="0"><code>git clone https://github.com/ggml-org/llama.cpp
+cd llama.cpp
+cmake -B build -DGGML_CUDA=ON
+cmake --build build --config Release -j 8
+</code></pre><p>That will create the build subdirectory and all of the tools under <code>llama.cpp/build/bin</code></p>
+<h3 id="downloading-and-running-the-gpt-oss-20b-model">Downloading and running the gpt-oss-20b model</h3>
+<p>There are <a href="https://huggingface.co/models?library=gguf&amp;sort=trending">many models in GGUF format</a> which you
+can download to run with llama.cpp. I&rsquo;m going with gpt-oss-20b here as it&rsquo;s optimized to run in under 16GB
+so we can fit the entire model on a single consumer GPU. For details on the model architecture
+see <a href="https://magazine.sebastianraschka.com/p/from-gpt-2-to-gpt-oss-analyzing-the">here</a>.</p>
+<p>Download the model from <a href="https://huggingface.co/unsloth/gpt-oss-20b-GGUF">huggingface.co/unsloth/gpt-oss-20b-GGUF</a>.
+This is a conversion of the original model released by OpenAI to the GGUF format used by llama.cpp plus some template fixes.
+Total size is around 13GB as the MOE (Mixture-of-Experts) weights which make up most of the size are
+quantized in <a href="https://huggingface.co/blog/RakshitAralimatti/learn-ai-with-me">MXFP4</a> format while the rest are BF16.
+There&rsquo;s no benefit in going for the other quantized files in the same repository.</p>
+<pre tabindex="0"><code>mkdir gguf
+cd gguf
+wget https://huggingface.co/unsloth/gpt-oss-20b-GGUF/resolve/main/gpt-oss-20b-F16.gguf
+</code></pre><p>To run the server:</p>
+<pre tabindex="0"><code>./llama.cpp/build/bin/llama-server -m ./gguf/gpt-oss-20b-unsloth-F16.gguf \
+	 --host 127.0.0.1 --port 8080 --ctx-size 32768 --keep 200 \
+	 --jinja -ub 2048 -b 2048 -ngl 99  -fa \
+	 --temp 1.0 --top-p 1.0 --min-p 0.0 --top-k 0
+</code></pre><p>The parameters are:</p>
+<ul>
+<li><code>--host 127.0.0.1</code> to set listen for requests on localhost - change to 0.0.0.0 to bind to all interfaces</li>
+<li><code>--port 8080</code> listen port for web server - default</li>
+<li><code>--ctx-size 32768</code> to set maximum context size in tokens - default is 131072 as defined in the gguf file</li>
+<li><code>--keep 200</code> to set number of tokens to keep if context size exceeded</li>
+<li><code>--jinja</code> use the built in chat template in the gguf file -
+this converts messages to the <a href="https://cookbook.openai.com/articles/openai-harmony">OpenAI harmony</a> response format</li>
+<li><code>-ub 2048</code> <code>-b 2048</code> batch size (as suggested <a href="https://github.com/ggml-org/llama.cpp/discussions/15396">here</a>)</li>
+<li><code>-ngl 99</code> number of GPU layers - i.e. run all layers on GPU</li>
+<li><code>-fa</code> enable flash attention - should improve performance</li>
+<li><code>--temp 1.0</code> <code>--top-p 1.0</code> <code>--min-p 0.0</code> <code>--top-k 0</code> - recommended sampling parameters from OpenAI.</li>
+</ul>
+<p>See <a href="https://github.com/ggml-org/llama.cpp/tree/master/tools/server">the full docs</a> for more.</p>
+<h3 id="using-the-builtin-llama-server-web-chat">Using the builtin llama-server web chat</h3>
+<p>Just point your browser to <code>http://localhost:8080</code> and you&rsquo;ll see the web interface.
+You may want to tweak the settings else they will override the sampling parameters given above,
+or to set a custom system prompt. It will show you the model&rsquo;s chain of thought before providing the
+final response on each turn. Performance is pretty good - around 50 tokens/sec.</p>
+<table>
+  <thead>
+      <tr>
+          <th></th>
+          <th></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><a href="/img/llama_server_settings.png"><img src="/img/llama_server_settings.png" alt="settings"></a></td>
+          <td><a href="/img/llama_server_chat.png"><img src="/img/llama_server_chat.png" alt="chat"></a></td>
+      </tr>
+  </tbody>
+</table>
+		</div>
+	</article>
+</main>
+
+
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2025 It&#39;s a banana? No it&#39;s a blog..
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+</body>
+</html>
