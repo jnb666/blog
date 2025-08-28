@@ -17,6 +17,7 @@ theme = 'mainroad'
 [Params]
   description = "Yet another blog about coding"
   post_meta = ["date"]
+  mainSections = ["posts"]
   readmore = true
   toc = false
   customCSS = ["css/custom.css"]

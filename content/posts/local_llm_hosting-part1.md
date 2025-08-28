@@ -91,8 +91,6 @@ final response. Performance is pretty good - around 50 tokens/sec.
 | ----------- | ----------- |
 | [![settings](/img/llama_server_settings.png)](/img/llama_server_settings.png) | [![chat](/img/llama_server_chat.png)](/img/llama_server_chat.png) |
 
-<!-- For the next post in this series go to [part 2](/posts/local_llm_hosting-part2). -->
-
 ### Running gpt-oss-120b
 
 The bigger 120 billion parameter flavour of the model is a 61 GB download. I don't have enough GPU memory to load
@@ -110,4 +108,7 @@ Not as snappy as the smaller model but still pretty usable.
 As you'd expect from the larger model it has a larger fact base. 
 e.g. [gpt-oss-20b](/docs/transcript_20b) vs [gpt-oss-120b](/docs/transcript_120b).
 
+
+For the next post in this series go to [part 2](/posts/local_llm_hosting-part2) which introduces calling
+the model via the Completions API in go.
 
