@@ -9,7 +9,9 @@ The `llama-server` binary provides an OpenAI compatible Completions API using a 
 
 <!--more-->
 
-All the code is available at the [github.com/jnb666/gpt-go](https://github.com/jnb666/gpt-go) repo.
+### Sending a chat completion request
+
+All the code below is available at the [github.com/jnb666/gpt-go](https://github.com/jnb666/gpt-go) repo.
 To save a lot of boilerplate we'll use the 
 [github.com/sashabaranov/go-openai](https://pkg.go.dev/github.com/sashabaranov/go-openai) module
 which handles building and parsing the necessary messages. 
@@ -57,11 +59,13 @@ User says "Hello". Probably just greeting. We can respond with greeting. Then pe
 Hello! 👋 How can I help you today?
 ```
 
+### Using the streaming API
+
 That's simple enough but `CreateChatCompletion` waits for the entire response to be generated before returning. 
 To show the tokens as they are produced we need to use the streaming API.
 
 This function will make a streaming request, send updates with new text as each new token is generated
-by the model and accumulate the final result and return this:
+by the model and accumulate and return the final result:
 ```go
 func createChatCompletionStream(ctx context.Context, client *openai.Client, request openai.ChatCompletionRequest,
 	callback func(openai.ChatCompletionStreamChoiceDelta)) (choice openai.ChatCompletionChoice, err error) {
