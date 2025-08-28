@@ -61,8 +61,7 @@ To run the server:
 ```
 ./llama.cpp/build/bin/llama-server -m ./gguf/gpt-oss-20b-unsloth-F16.gguf \
 	 --host 127.0.0.1 --port 8080 --ctx-size 32768 --keep 200 \
-	 --jinja -ub 2048 -b 2048 -ngl 99  -fa \
-	 --temp 1.0 --top-p 1.0 --min-p 0.0 --top-k 0
+	 --jinja -ub 2048 -b 2048 -ngl 99 -fa
 ```
 
 The parameters are:
@@ -75,20 +74,40 @@ The parameters are:
 - `-ub 2048` `-b 2048` batch size (as suggested [here](https://github.com/ggml-org/llama.cpp/discussions/15396))
 - `-ngl 99` number of GPU layers - i.e. run all layers on GPU
 - `-fa` enable flash attention - should improve performance
-- `--temp 1.0` `--top-p 1.0` `--min-p 0.0` `--top-k 0` - recommended sampling parameters from OpenAI.
+
 
 See [the full docs](https://github.com/ggml-org/llama.cpp/tree/master/tools/server) for more.
 
 ### Using the builtin llama-server web chat
 
 Just point your browser to `http://localhost:8080` and you'll see the web interface. 
-You may want to tweak the settings else they will override the sampling parameters given above, 
-or to set a custom system prompt. It will show you the model's chain of thought before providing the 
-final response on each turn. Performance is pretty good - around 50 tokens/sec.
+The sampling parameters recommended by OpenAI are `temperature=1.0` `top-p=1.0` `top-k=0`.
+In the example below I've set these plus also set a custom system prompt.
+
+The interface will stream output from the model showing chain of thought followed by the
+final response. Performance is pretty good - around 50 tokens/sec.
 
 | | |
 | ----------- | ----------- |
 | [![settings](/img/llama_server_settings.png)](/img/llama_server_settings.png) | [![chat](/img/llama_server_chat.png)](/img/llama_server_chat.png) |
 
 <!-- For the next post in this series go to [part 2](/posts/local_llm_hosting-part2). -->
+
+### Running gpt-oss-120b
+
+The bigger 120 billion parameter flavour of the model is a 61 GB download. I don't have enough GPU memory to load
+the entire model in VRAM but as per [this reddit thread](https://www.reddit.com/r/LocalLLaMA/comments/1mke7ef/120b_runs_awesome_on_just_8gb_vram/) we can use the `--n-cpu-moe` parameter to offload some or all of the MOE layers
+to run on CPU while running the rest on GPU.
+
+Running the model with these params:
+```
+./llama.cpp/build/bin/llama-server -m ./gguf/gpt-oss-120b-unsloth-F16.gguf \
+	 --host 127.0.0.1 --port 8080 --ctx-size 32768 --keep 200 \
+	 --jinja -ub 2048 -b 2048 -ngl 99 -fa --n-cpu-moe 28 
+```
+uses around 20GB GPU VRAM + 54GB system RAM. On my system the performance is around 11.5 tokens/sec.
+Not as snappy as the smaller model but still pretty usable. 
+As you'd expect from the larger model it has a larger fact base. 
+e.g. [gpt-oss-20b](/docs/transcript_20b) vs [gpt-oss-120b](/docs/transcript_120b).
+
 
