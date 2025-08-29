@@ -1,6 +1,6 @@
 +++
 date = '2025-08-28T13:52:27+01:00'
-title = 'Local LLM models: Part2 - a basic cmd line app in go'
+title = 'Local LLM models: Part 2 - a basic cmd line app in go'
 +++
 For the first post in this series which covers setting up the environment see [part 1](/posts/local_llm_hosting-part1).
 
@@ -169,5 +169,6 @@ George Washington was born on **February 22, 1732** at his family’s farm i
 > ^C
 ```
 
-In the next post we'll extend this to cover tool calling so that the model can generate function calls and process the results.
+In [part 3](/posts/local_llm_hosting-part3) we'll extend this to cover tool calling so that the model can generate 
+function calls and process the results.
 

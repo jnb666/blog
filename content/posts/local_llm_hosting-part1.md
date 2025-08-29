@@ -1,6 +1,6 @@
 +++
 date = '2025-08-27T10:39:38+01:00'
-title = 'Local LLM models: Part1 - getting started'
+title = 'Local LLM models: Part 1 - getting started'
 +++
 This will be a series of posts about running LLMs locally. 
 By the end we should have our own web based chat interface which can call tools 
