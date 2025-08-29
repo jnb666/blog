@@ -1,6 +1,5 @@
 +++
 date = '2025-08-29T17:08:49+01:00'
-draft = true
 title = 'Local_llm_hosting Part 3 - calling tool functions'
 +++
 For the previous post in this series which is an into to the completions API in go see 
