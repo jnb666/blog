@@ -2,7 +2,7 @@
 date = '2025-08-29T17:08:49+01:00'
 title = 'Local LLM models: Part 3 - calling tool functions'
 +++
-For the previous post in this series which is an into to the completions API in go see 
+For the previous post in this series which is an intro to the completions API in go see 
 [part 2](/posts/local_llm_hosting-part2).
 In this post we will extend the command line chat app to add simple tool calling using the 
 [Open Weather API](https://openweathermap.org/api). 
@@ -341,6 +341,4 @@ If you need more details or want to adjust the forecast window, just let me know
 
 ```
 
-That's it for now. Future posts will cover building a web browser tool and a web based chat interface.
-
-
+In [part 4](/posts/local_llm_hosting-part4) we take this app and replace the command line interface with a browser based front end.

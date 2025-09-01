@@ -25,3 +25,7 @@ theme = 'mainroad'
 [caches]
   [caches.images]
     dir = ':cacheDir/images'
+
+[markup]
+  [markup.highlight]
+    style = 'pygments'
