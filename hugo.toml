@@ -22,10 +22,12 @@ theme = 'mainroad'
   toc = false
   customCSS = ["css/custom.css"]
 
-[caches]
-  [caches.images]
-    dir = ':cacheDir/images'
+[caches.images]
+  dir = ':cacheDir/images'
 
-[markup]
-  [markup.highlight]
-    style = 'pygments'
+[markup.highlight]
+  style = 'pygments'
+
+[markup.goldmark] 
+  parser.autoHeadingID = true
+  renderer.unsafe = true

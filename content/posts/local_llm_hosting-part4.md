@@ -1,5 +1,5 @@
 +++
-date = '2025-08-30T11:20:34+01:00'
+date = '2025-09-01T11:20:34+01:00'
 title = 'Local LLM models: Part 4 - a simple web UI'
 +++
 In this post we will take the command line chat / tool calling app we described in [part 3 of this series](/posts/local_llm_hosting-part3)
@@ -578,7 +578,8 @@ All of the source code for this example is under https://github.com/jnb666/gpt-g
 [part 1](/posts/local_llm_hosting-part1) (scripts/llama-server.sh has an example startup script), run the web server with `go run cmd/webchat/webchat.go`
 and connect with a browser on `http://localhost:8000`.
 
-In the next part of this series we'll add a web browser tool plugin to add the functionality ao the model can search the web and load the results.
+In the [final part](/posts/local_llm_hosting-part5) of this series we'll add a web browser tool plugin to add the functionality
+so the model can search the web process the results.
 
 
 
