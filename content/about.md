@@ -8,7 +8,7 @@ Writing stuff down is a good way to understand it better. Plus it may even be us
 for someone else if they find this site.
 
 You can find source code on [http://github.com/jnb666](http://github.com/jnb666) 
-or contact me at [john@itsabanana.dev](john@itsabanana.dev)
+or contact me at [john@itsabanana.dev](mailto:john@itsabanana.dev)
 
 And the name of the site? If you haven't figured it out yet it comes from the scene in
 Red Dwarf where Lister is teaching Kryten how to break his programming...
